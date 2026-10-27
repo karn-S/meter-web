@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3P3W · Field Diagnosis</title>
+<meta name="description" content="จัดอันดับสมมติฐานการต่อผิด/อัตราทดผิดของมิเตอร์ 3P3W จากค่าที่วัดหน้างาน พร้อมผังสายที่ไฮไลต์จุดสงสัย">
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#131e30;--line:#2b3a51;--muted:#b0bed2;--ink:#f3f6fb;--accent:#ffd05c;--good:#6ce7aa;--bad:#ff7b7b;--warning:#ffab6e;--given:#72aaff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Noto Sans Thai",Arial,sans-serif;font-size:16px;line-height:1.6}button,input,select{font:inherit;border:1px solid #465871;border-radius:8px;background:#0b1525;color:var(--ink)}button{padding:9px 14px;cursor:pointer}button:hover{border-color:var(--accent)}button.primary{background:var(--accent);color:#172030;border-color:var(--accent);font-weight:700}button:disabled{opacity:.5;cursor:wait}input,select{padding:6px 8px;width:100%}select.type{min-width:76px}input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0}a{color:#a5c8ff}header,main{max-width:1280px;margin:auto;padding:22px 28px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.eyebrow{font-size:13px;letter-spacing:2px;color:var(--accent);font-weight:700}h1{margin:3px 0;font-size:26px}h2{font-size:18px;margin:0 0 6px}h3{font-size:16px;margin:14px 0 6px}.step{display:inline-block;background:var(--accent);color:#172030;border-radius:50%;width:26px;height:26px;text-align:center;font-weight:700;margin-right:8px;line-height:26px}.sub{color:var(--muted);font-size:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}label.f{display:block;font-size:14px;color:var(--muted)}label.check{display:flex;gap:10px;align-items:center;min-height:36px;cursor:pointer}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--muted);font-weight:400;background:#101a2b}td,th{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}td.num{font-family:Consolas,monospace;white-space:nowrap}.table-wrap{overflow:auto}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bad{color:var(--bad)}.good{color:var(--good)}.warn{color:var(--warning)}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid #7d8aa0}.count{font-family:Consolas,monospace;color:var(--accent)}progress{width:220px}
+.verdict{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px;margin-bottom:14px;font-size:17px}.verdict .icon{font-size:30px;line-height:1}.verdict.badv{background:#3a1f26;border:1px solid #7a3340}.verdict.goodv{background:#183429;border:1px solid #2f6b50}
+.ranks{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}.ranks button{padding:6px 12px;font-size:14px}.ranks button.on{background:var(--accent);color:#172030;border-color:var(--accent)}
+.diagram-wrap{overflow:auto;background:#0e1626;border:1px solid var(--line);border-radius:12px}.diagram{display:block;width:100%;min-width:700px}.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:8px 0}.legend i{display:inline-block;width:22px;height:5px;vertical-align:middle;margin-right:5px;border-radius:3px}
+.todo{list-style:none;padding:0;margin:6px 0}.todo li{padding:8px 12px;margin:6px 0;background:#2b2232;border-left:4px solid var(--warning);border-radius:6px}.todo li.given{background:#1d2a40;border-left-color:var(--given)}.fitbar{height:10px;border-radius:5px;background:#2b3a51;overflow:hidden;margin:4px 0 10px}.fitbar span{display:block;height:100%;background:var(--good)}
+details summary{cursor:pointer;color:var(--muted)}.hidden{display:none!important}
+@media(max-width:850px){header,main{padding:16px}.grid,.row4{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid,.row4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">METER / FIELD DIAGNOSIS</div><h1>3P3W · วิเคราะห์ความผิดปกติจากค่าหน้างาน</h1><div class="sub">กรอกค่าที่วัด บอกสิ่งที่ตรวจแล้ว แล้วดูผังสายว่าน่าจะผิดตรงไหน</div></div><div class="actions"><a href="3P3W_Vector_Simulator.html">ตัวจำลองเวกเตอร์ ↗</a><a href="3P3W_Visual_Prototype.html">ห้องฝึกตัด / ต่อสาย ↗</a></div></header>
+<main>
+<section class="panel"><h2><span class="step">1</span>ค่าที่วัดได้</h2><div class="sub" style="margin-bottom:10px">เว้นว่างช่องที่ไม่ได้วัด · ลูกศร clamp ชี้เข้ามิเตอร์ · PF ติดลบ = กระแสห่างแรงดันเกิน 90°</div>
+<div class="grid">
+<div><h3>กระแสที่สายเข้ามิเตอร์</h3><div class="table-wrap"><table><thead><tr><th>สาย</th><th>A</th><th>PF</th><th>lag/lead</th><th>PF เทียบแรงดัน</th></tr></thead><tbody id="currents"></tbody></table></div></div>
+<div><h3>แรงดัน</h3><div class="sub">วัดที่ปลายสายฝั่งมิเตอร์ หรือที่ขั้วมิเตอร์</div><div class="table-wrap"><table><thead><tr><th>จุด A</th><th>จุด B</th><th>V</th><th></th></tr></thead><tbody id="voltages"></tbody></table></div><div class="actions" style="margin-top:8px"><button id="addV">+ เพิ่มคู่แรงดัน</button></div></div>
+</div></section>
+
+<section class="panel"><h2><span class="step">2</span>สิ่งที่ตรวจแล้วหน้างาน (ช่วยตัดตัวเลือก)</h2><div class="sub">ส่วนที่ติ๊กจะถือว่าถูกตามที่ระบุ โปรแกรมจะไม่เดาว่าผิดตรงนั้น</div>
+<label class="check"><input type="checkbox" id="meterKnown"> ดูการต่อสายหน้ามิเตอร์แล้ว จะระบุตามที่เห็น</label>
+<div id="meterBox" class="hidden" style="margin:4px 0 10px 28px"><div class="table-wrap"><table><thead><tr><th>สาย</th><th>ต่อเข้าขั้ว</th></tr></thead><tbody id="meterRows"></tbody></table></div>
+<label class="check"><input type="checkbox" id="bond" checked> มี bond 17–19 (common CT กับ common PT) ที่มิเตอร์</label>
+<label class="check"><input type="checkbox" id="jumper" checked> มี jumper 17–23</label></div>
+<label class="check"><input type="checkbox" id="poleOK"> บนเสา: ตรวจแล้วว่าต่อถูก (ขั้ว CT/PT และ common)</label>
+<label class="check"><input type="checkbox" id="cableOK"> สายระหว่างทาง: ตรวจแล้วไม่ขาด ไม่หลวม</label>
+<h3>การต่อลงดิน (earth) ที่เห็น</h3><div class="sub">ไม่ทราบ = ให้โปรแกรมลองทั้งมีและไม่มี (รวมแบบต่อฝั่งเดียว)</div>
+<div class="row4" id="earthBox"></div>
+<label class="check"><input type="checkbox" id="pairs" checked> ค้นแบบผิดสองจุดพร้อมกันด้วย</label>
+<div class="sub">จะตรวจ <span id="count" class="count">–</span></div>
+</section>
+
+<section class="panel"><h2><span class="step">3</span>ด้าน primary และป้ายอัตราทด (ไม่บังคับ ใช้ตรวจ ratio)</h2>
+<div class="row4">
+<label class="f">กระแส primary (A)<input id="primaryCurrent" type="number" step="any" min="0"></label>
+<label class="f">แรงดัน primary line–line (V)<input id="primaryVoltage" type="number" step="any" min="0"></label>
+<label class="f">CT ratio ตามป้าย (200/5 = 40)<input id="ctRatio" type="number" step="any" min="0"></label>
+<label class="f">PT ratio ตามป้าย (22000/110 = 200)<input id="ptRatio" type="number" step="any" min="0"></label>
+</div>
+<div class="actions" style="margin-top:14px"><button id="run" class="primary">วิเคราะห์</button><button id="example">ใส่ตัวอย่างหน้างาน 17 ต.ค. 2026</button><button id="clear">ล้างค่า</button><progress id="progress" max="1" value="0" hidden></progress><span id="status" class="sub"></span></div>
+</section>
+
+<section class="panel hidden" id="resultPanel"><h2>ผลวิเคราะห์</h2><div id="verdict"></div>
+<div class="sub">อันดับสาเหตุ (กดเพื่อดูผัง) · ตัวเลขเล็กกว่า = เข้ากับค่าที่วัดมากกว่า</div><div id="ranks" class="ranks"></div>
+<div id="variants" class="ranks"></div>
+<div><div class="diagram-wrap"><svg id="diagram" class="diagram" viewBox="0 0 900 470" role="img" aria-label="ผังสายตามสมมติฐาน"></svg></div>
+<div class="legend"><span><i style="background:var(--warning)"></i>จุดที่สงสัยว่าผิด</span><span><i style="background:var(--given)"></i>ตามที่ระบุว่าเห็นหน้างาน</span><span><b class="bad">✕</b> ขาด / หลุด</span><span><b class="good">⏚</b> จุดที่ต่อ earth ในผังนี้ (ฟ้า = ตามที่ระบุ)</span><span><b class="good">✓</b>/<b class="bad">✗</b> ค่าที่วัดตรง/ไม่ตรงกับผังนี้</span></div></div>
+<div class="grid"><div><h3>ไปตรวจหน้างานตามนี้</h3><ul id="todo" class="todo"></ul></div><div><h3>ข้อมูลประกอบ</h3><div id="facts" class="sub"></div></div></div>
+<h3>ค่าที่วัดเทียบกับผังนี้</h3><div id="fit" class="sub"></div><div class="fitbar"><span id="fitbar"></span></div>
+<div class="table-wrap"><table><thead><tr><th>ค่า</th><th>วัดได้</th><th>ผังนี้ให้</th><th id="baseHead">ถ้าต่อปกติ</th><th></th></tr></thead><tbody id="compare"></tbody></table></div>
+<p class="sub" id="moreHint"></p>
+</section>
+
+<section class="panel"><details><summary>สมมติฐานและวิธีคิดของโปรแกรม</summary><ul class="sub">
+<li>ใช้โมเดล secondary เดียวกับตัวจำลองเวกเตอร์ (เชิงเส้น 50 Hz, ค่าสาย/burden/contact ตั้งต้น) โหลดสมดุล ลำดับเฟส RYB กำลังไหลไปโหลด; มุมโหลดและขนาดกระแส/แรงดันหาจากค่าที่วัด</li>
+<li>earth มี 4 จุดที่โมเดลรองรับ: common CT และ common PT บนเสา, ขั้ว 17 และ 19 ที่มิเตอร์ (จุดละ 10 Ω) จุดที่ไม่ทราบจะลองทุกแบบ: รอบแรกทุกสมมติฐานลอง 4 แบบ: ไม่ต่อ, ต่อเฉพาะบนเสา, ต่อเฉพาะที่มิเตอร์, ต่อทั้งสองด้าน แล้ว 300 สมมติฐานที่ดีที่สุดลองแบบต่อบางจุดที่เหลือ; earth จุดเดียวไม่มีกระแสไหลจึงนับเหมือนไม่มี</li>
+<li>คะแนน = ผลรวมกำลังสองของความคลาด (กระแส 3%+0.02 A, แรงดัน 3%+1 V, มุม 3°) + 6 ต่อจุดผิดหนึ่งจุด; ✓ = คลาดไม่เกินค่ายอมรับ, ~ = ไม่เกิน 2 เท่า, ✗ = มากกว่านั้น</li>
+<li>การสลับสายที่ขั้วมิเตอร์มองไม่เห็นจากค่าที่วัดบนสาย ให้วัดแรงดันที่ขั้วมิเตอร์เพิ่ม หรือระบุการต่อหน้ามิเตอร์ในขั้นที่ 2</li>
+<li>ผลเป็นการจัดอันดับความเป็นไปได้ ไม่ใช่การยืนยัน ต้องตรวจหน้างานก่อนแก้สาย</li></ul></details></section>
+</main>
+<script src="vector-engine.js"></script>
+<script src="field-diagnosis.js"></script>
+<script>
+const $=id=>document.getElementById(id),D=FieldDiagnosis,V=VectorLab,esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const colors=V.wireColors,dot=k=>`<span class="dot" style="background:${colors[k]}"></span>`;
+const points=[...D.wires.map(w=>[w,'สาย'+D.wireThai[w]]),...D.terminals.map(t=>[t,'ขั้วมิเตอร์ '+t])];
+const pointOptions=sel=>points.map(([v,l])=>`<option value="${v}"${v===sel?' selected':''}>${l}</option>`).join('');
+const refs=[['white','gray'],['orange','gray'],['white','orange'],['16','19'],['22','19']];
+const refLabel=r=>r.map(p=>D.wires.includes(p)?D.wireThai[p]:'ขั้ว '+p).join('–');
+$('currents').innerHTML=D.wires.map((w,k)=>`<tr data-wire="${w}"><td>${dot(k)}${D.wireThai[w]}</td><td><input class="a" type="number" step="any" min="0"></td><td><input class="pf" type="number" step="any" min="-1" max="1"></td><td><select class="type"><option value="lag">lag</option><option value="lead">lead</option></select></td><td><select class="ref">${refs.map((r,i)=>`<option value="${i}"${i===(w==='green'?1:0)?' selected':''}>${refLabel(r)}</option>`).join('')}</select></td></tr>`).join('');
+$('meterRows').innerHTML=D.wires.map((w,k)=>`<tr><td>${dot(k)}${D.wireThai[w]}</td><td><select class="mdest" data-k="${k}">${V.terminalNames.map((t,d)=>`<option value="${d}"${d===k?' selected':''}>${t}${d===k?' (ปกติ)':''}</option>`).join('')}<option value="open">ไม่ได้ต่อ / หลุด</option></select></td></tr>`).join('');
+function addVoltage(a='white',b='gray',v=''){const tr=document.createElement('tr');tr.innerHTML=`<td><select class="pa">${pointOptions(a)}</select></td><td><select class="pb">${pointOptions(b)}</select></td><td><input class="v" type="number" step="any" min="0" value="${v}"></td><td><button class="del" title="ลบแถว">×</button></td>`;tr.querySelector('.del').onclick=()=>tr.remove();$('voltages').append(tr);}
+const num=el=>el.value.trim()===''?null:Number(el.value);
+function readOptions(){
+ const o={pairs:$('pairs').checked,verified:[...($('poleOK').checked?['pole']:[]),...($('cableOK').checked?['cable']:[])],earth:{}};
+ for(const k of D.earthKeys){const v=$('earth'+k).value;if(v!=='')o.earth[k]=v==='1';}
+ if($('meterKnown').checked)o.meter={rows:[...document.querySelectorAll('.mdest')].map((s,k)=>s.value==='open'?{dest:k,status:'open'}:{dest:+s.value,status:'normal'}),bond:$('bond').checked,returnJumper:$('jumper').checked};
+ return o;
+}
+$('earthBox').innerHTML=D.earthKeys.map(k=>`<label class="f">${D.earthThai[k]}<select id="earth${k}"><option value="">ไม่ทราบ</option><option value="1">มี earth</option><option value="0">ไม่มี</option></select></label>`).join('');
+const updateCount=()=>{$('meterBox').classList.toggle('hidden',!$('meterKnown').checked);const o=readOptions(),n=D.earthCombos(o.earth).length;$('count').textContent=D.countHypotheses(o).toLocaleString()+' สมมติฐานการต่อสาย × '+n+' แบบ earth';};
+for(const id of ['meterKnown','poleOK','cableOK','pairs',...D.earthKeys.map(k=>'earth'+k)])$(id).addEventListener('change',updateCount);
+function readField(){
+ const currents=[],voltages=[];
+ for(const tr of $('currents').rows){const A=num(tr.querySelector('.a'));if(A==null)continue;const pf=num(tr.querySelector('.pf')),m={wire:tr.dataset.wire,A};
+  if(!(A>=0))throw Error('กระแสสาย'+D.wireThai[m.wire]+'ต้องเป็นจำนวนไม่ติดลบ');
+  if(pf!=null){if(!(Math.abs(pf)<=1))throw Error('PF สาย'+D.wireThai[m.wire]+'ต้องอยู่ระหว่าง −1 ถึง 1');Object.assign(m,{pf,type:tr.querySelector('.type').value,ref:refs[+tr.querySelector('.ref').value]});}
+  currents.push(m);}
+ for(const tr of $('voltages').rows){const v=num(tr.querySelector('.v'));if(v==null)continue;if(!(v>=0))throw Error('แรงดันต้องเป็นจำนวนไม่ติดลบ');const a=tr.querySelector('.pa').value,b=tr.querySelector('.pb').value;if(a===b)throw Error('คู่แรงดันต้องเป็นสองจุดต่างกัน');voltages.push({a,b,V:v});}
+ if(!currents.length)throw Error('กรอกกระแสอย่างน้อยหนึ่งสาย');
+ if(!voltages.length&&!currents.some(m=>m.ref))throw Error('กรอกแรงดันหรือ PF อย่างน้อยหนึ่งค่า');
+ const field={currents,voltages};for(const k of ['primaryCurrent','primaryVoltage','ctRatio','ptRatio']){const v=num($(k));if(v!=null){if(!(v>0))throw Error(k+' ต้องมากกว่า 0');field[k]=v;}}
+ return field;
+}
+const f3=x=>x==null||!Number.isFinite(x)?'—':Math.abs(x)>=100?x.toFixed(1):x.toFixed(3),pct=x=>(x>0?'+':'')+(x*100).toFixed(1)+'%';
+const mark=e=>Math.abs(e)<=1?'<b class="good">✓</b>':Math.abs(e)<=2?'<b class="warn">~</b>':'<b class="bad">✗</b>';
+
+// Wiring diagram: pole pins → pole wire nodes → cable → meter-side wire ends → meter terminals.
+const PX=200,WX=280,MX=600,TX=720,pinY=k=>58+k*46+Math.floor(k/2)*8,wireY=w=>70+w*62,termY=t=>62+t*56;
+function drawDiagram(h,given,field){
+ const s=h.state,W=[],hl='#ffab6e',gv='#72aaff';
+ const line=(x1,y1,x2,y2,c,mode)=>{let out='';if(mode)out+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${mode==='given'?gv:hl}" stroke-width="11" stroke-linecap="round" opacity=".55"/>`;return out+`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#5b6678" stroke-width="5.5" stroke-linecap="round"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/>`;};
+ const cross=(x,y)=>`<text x="${x}" y="${y+7}" text-anchor="middle" font-size="22" font-weight="700" fill="#ff7b7b">✕</text>`;
+ const text=(x,y,t,attrs='')=>`<text x="${x}" y="${y}" font-size="13" fill="#d7e0ee" ${attrs}>${esc(t)}</text>`;
+ W.push(`<rect x="10" y="20" width="${PX+8}" height="440" rx="12" fill="#131e30" stroke="#2b3a51"/>`,text(22,40,'บนเสา (ขั้ว CT/PT)','font-weight="700"'));
+ W.push(`<rect x="${TX-8}" y="20" width="180" height="440" rx="12" fill="#131e30" stroke="#2b3a51"/>`,text(TX+4,40,'มิเตอร์ (ขั้ว)','font-weight="700"'));
+ // Devices and their two pins.
+ const dev=['CT R','CT B','PT R','PT B'],flagFor=[['revR','ctR','bypassR'],['revB','ctB','bypassB'],['revPTR'],['revPTB']];
+ dev.forEach((d,i)=>{const y1=pinY(i*2),y2=pinY(i*2+1),f=s.flags,[rev,byp,pos]=flagFor[i];
+  W.push(`<rect x="24" y="${y1-14}" width="74" height="${y2-y1+28}" rx="8" fill="#0b1525" stroke="${f[rev]||(byp&&f[byp])?hl:'#465871'}" stroke-width="${f[rev]||(byp&&f[byp])?3:1}"/>`,text(34,(y1+y2)/2+5,d,'font-weight="700"'));
+  if(f[rev])W.push(text(26,y2+30,'⟲ กลับขั้ว','fill="#ffab6e" font-weight="700"'));
+  if(byp&&f[byp])W.push(`<line x1="104" y1="${y1}" x2="104" y2="${y2}" stroke="${hl}" stroke-width="4" stroke-dasharray="5 4"/>`,text(108,y2+30,'bypass ที่'+({source:'ขั้ว CT',pole:'บนเสา',meter:'มิเตอร์'})[f[pos]],'fill="#ffab6e" font-weight="700"'));});
+ V.sourceNames.forEach((n,k)=>{W.push(`<circle cx="${PX}" cy="${pinY(k)}" r="5" fill="#d7e0ee"/>`,text(118,pinY(k)+5,n.split(' ')[2]));});
+ // Pole connections.
+ s.pole.forEach((r,k)=>{const normal=r.dest===V.poleDefault[k]&&r.status==='normal';
+  if(r.status==='open'){W.push(line(PX,pinY(k),PX+34,pinY(k),colors[V.poleDefault[k]],'fault'),cross(PX+50,pinY(k)));return;}
+  W.push(line(PX,pinY(k),WX,wireY(r.dest),colors[r.dest],normal?null:'fault'));});
+ if(s.poleBond)W.push(line(WX-16,wireY(2),WX-16,wireY(5),'#d7e0ee','fault'),text(WX-120,(wireY(2)+wireY(5))/2,'bond บนเสา','fill="#ffab6e"'));
+ // Cables with measured currents.
+ const curRow=k=>h.rows.find(r=>r.what==='I '+D.wireThai[D.wires[k]]);
+ D.wires.forEach((w,k)=>{const y=wireY(k),c=s.cable[k].status,mid=(WX+MX)/2;
+  W.push(`<circle cx="${WX}" cy="${y}" r="5" fill="${colors[k]}" stroke="#d7e0ee"/>`);
+  if(c==='open')W.push(line(WX,y,mid-22,y,colors[k],'fault'),line(mid+22,y,MX,y,colors[k],'fault'),cross(mid,y));
+  else W.push(line(WX,y,MX,y,colors[k],c==='loose'?'fault':null));
+  W.push(text(WX+14,y-9,'สาย'+D.wireThai[w]+(c==='loose'?' · หลวม':c==='open'?' · ขาด':''),c!=='normal'?'fill="#ffab6e" font-weight="700"':''));
+  const r=curRow(k);if(r)W.push(text(MX-150,y-9,`วัด ${f3(r.meas)} A `,'font-family="Consolas,monospace"')+`<text x="${MX-26}" y="${y-9}" font-size="15" font-weight="700" fill="${Math.abs(r.e)<=1?'#6ce7aa':Math.abs(r.e)<=2?'#ffab6e':'#ff7b7b'}">${Math.abs(r.e)<=1?'✓':Math.abs(r.e)<=2?'~':'✗'}</text>`);
+  W.push(`<circle cx="${MX}" cy="${y}" r="5" fill="${colors[k]}" stroke="#d7e0ee"/>`);});
+ // Meter landings.
+ s.meter.forEach((r,k)=>{const y=wireY(k),changed=r.dest!==k||r.status!=='normal',isGiven=given&&(given.rows[k].dest!==k||given.rows[k].status!=='normal');
+  if(r.status==='open'){W.push(line(MX,y,MX+40,y,colors[k],isGiven?'given':'fault'),cross(MX+56,y));return;}
+  W.push(line(MX,y,TX,termY(r.dest),colors[k],changed?(isGiven?'given':'fault'):null));});
+ V.terminalNames.forEach((t,i)=>{W.push(`<circle cx="${TX}" cy="${termY(i)}" r="6" fill="#d7e0ee"/>`,text(TX+14,termY(i)+5,t));});
+ // Links between terminals drawn as brackets right of the labels: bond 17–19 and jumper 17–23.
+ const link=(a,b,x,label,present)=>{const ya=termY(a),yb=termY(b),d=`M ${TX+112} ${ya} H ${x} V ${yb} H ${TX+112}`,mode=present?null:(given?'given':'fault');
+  if(mode)W.push(`<path d="${d}" fill="none" stroke="${mode==='given'?gv:hl}" stroke-width="10" opacity=".55"/>`);
+  W.push(`<path d="${d}" fill="none" stroke="#d7e0ee" stroke-width="2.5" ${present?'':'stroke-dasharray="4 5" opacity=".6"'}/>`);
+  if(!present)W.push(cross(x,(ya+yb)/2-8));W.push(text(x+4,yb+18,label,'font-size="11" fill="#b0bed2" text-anchor="end"'));};
+ link(2,5,TX+138,'bond',s.bond);link(2,6,TX+160,'jumper',s.returnJumper);
+ // Earth symbols at the four points the model can earth.
+ const ground=(x,y,key)=>{if(!s.earth[key])return;const isGiven=last.earthGiven[key]!=null;
+  W.push(`<path d="M ${x} ${y} V ${y+16} M ${x-11} ${y+16} H ${x+11} M ${x-7} ${y+21} H ${x+7} M ${x-3} ${y+26} H ${x+3}" stroke="${isGiven?gv:'#6ce7aa'}" stroke-width="2.5" fill="none"/>`);};
+ ground(WX+44,wireY(2),'PoleCT');ground(WX+44,wireY(5),'PolePT');ground(TX-16,termY(2),'MeterCT');ground(TX-16,termY(5),'MeterPT');
+ W.push(text(22,456,h.earth+(s.sequence==='RBY'?' · ลำดับเฟสกลับ RBY':'')+` · โหลด PF ${h.loadPF.toFixed(2)} ${h.phi>=0?'lag':'lead'}`,'fill="#b0bed2"'));
+ $('diagram').innerHTML=W.join('');
+}
+let last=null;
+function show(gi,vi){
+ const {groups,result,given}=last,g=groups[gi],h=g.items[vi];
+ [...$('ranks').children].forEach((b,i)=>b.classList.toggle('on',i===gi));
+ $('variants').innerHTML=g.items.length>1?`<span class="sub" style="align-self:center">อธิบายได้เท่ากัน ${g.items.length} แบบ:</span>`+g.items.map((_,i)=>`<button class="${i===vi?'on':''}" data-v="${i}">แบบ ${i+1}</button>`).join(''):'';
+ [...$('variants').querySelectorAll('button')].forEach(b=>b.onclick=()=>show(gi,+b.dataset.v));
+ drawDiagram(h,given,last.field);
+ const todo=h.faults.map(f=>`<li>${esc(f)}</li>`);
+ if(given&&given.rows.some((r,k)=>r.dest!==k||r.status!=='normal'))todo.push(`<li class="given">หน้ามิเตอร์ตามที่ระบุ: ${given.rows.map((r,k)=>r.status==='open'?`สาย${D.wireThai[D.wires[k]]}ไม่ได้ต่อ`:r.dest!==k?`สาย${D.wireThai[D.wires[k]]}อยู่ขั้ว ${V.terminalNames[r.dest]}`:'').filter(Boolean).join(', ')}</li>`);
+ if(!todo.length)todo.push('<li class="given">ไม่พบจุดผิดเพิ่มจากที่ระบุ</li>');
+ $('todo').innerHTML=todo.join('');
+ const facts=[];if(h.impliedCT)facts.push(`CT ratio ที่อนุมาน ≈ ${f3(h.impliedCT)}${h.ctError!=null?` (ต่างจากป้าย <b class="${Math.abs(h.ctError)>0.05?'bad':'good'}">${pct(h.ctError)}</b>)`:''}`);
+ if(h.impliedPT)facts.push(`PT ratio ที่อนุมาน ≈ ${f3(h.impliedPT)}${h.ptError!=null?` (ต่างจากป้าย <b class="${Math.abs(h.ptError)>0.05?'bad':'good'}">${pct(h.ptError)}</b>)`:''}`);
+ if(!h.impliedCT&&!h.impliedPT)facts.push('ยังตรวจ ratio ไม่ได้ เพราะไม่ได้กรอกค่า primary');
+ const cr=h.currentRatio;if(cr.R&&cr.B&&Math.abs(cr.R/cr.B-1)>0.05)facts.push(`<span class="warn">กระแสแดง/เขียวเทียบที่คาดต่างกัน ${pct(cr.R/cr.B-1)}: CT R/B อัตราทดไม่เท่ากัน หรือโหลดไม่สมดุล</span>`);
+ if(h.earthAlso.length>1)facts.push(`earth ที่เข้ากับค่าที่วัดได้เท่ากัน ${h.earthAlso.length} แบบ: ${h.earthAlso.map(esc).join(' / ')}`);
+ facts.push(`โหลดที่ fit ได้ PF ${h.loadPF.toFixed(3)} ${h.phi>=0?'lag':'lead'} · กระแส secondary ≈ ${f3(h.kI)} A · แรงดัน ≈ ${f3(h.kV)} V`);
+ $('facts').innerHTML=facts.map(x=>`<p>${x}</p>`).join('');
+ const ok=h.rows.filter(r=>Math.abs(r.e)<=1).length;$('fit').innerHTML=`ค่าที่วัดตรงกับผังนี้ <b>${ok} จาก ${h.rows.length}</b> ค่า`;$('fitbar').style.width=(100*ok/h.rows.length)+'%';
+ const normal=result.normal;
+ $('compare').innerHTML=h.rows.map((r,i)=>{const n=normal&&normal.rows[i];return `<tr><td>${esc(r.what)}</td><td class="num">${f3(r.meas)} ${r.unit}</td><td class="num">${r.pred==null?'ไม่กำหนด':f3(r.pred)+' '+r.unit}</td><td class="num sub">${n?(n.pred==null?'ไม่กำหนด':f3(n.pred)+' '+n.unit)+' '+mark(n.e):'—'}</td><td>${mark(r.e)}</td></tr>`;}).join('');
+}
+function render(result,field,given,earthGiven){
+ const groups=[];for(const h of result.top){const g=groups.find(g=>Math.abs(g.total-h.total)<0.5);if(g)g.items.push(h);else groups.push({total:h.total,items:[h]});}
+ const n=result.normal,normalFits=n&&n.total<=result.top[0].total+0.5,base=given?'การต่อตามที่ระบุ (ไม่มีจุดผิดเพิ่ม)':'การต่อปกติ';
+ $('verdict').innerHTML=`<div class="verdict ${normalFits?'goodv':'badv'}"><span class="icon">${normalFits?'✓':'✗'}</span><div><b>${normalFits?base+'อธิบายค่าที่วัดได้':base+'อธิบายค่าที่วัดไม่ได้'}</b><div class="sub">ตรวจ ${result.count.toLocaleString()} สมมติฐาน${groups[0].items.length>1?` · อันดับ 1 มี ${groups[0].items.length} แบบที่อธิบายได้เท่ากัน ต้องวัดเพิ่มเพื่อแยก`:''}</div></div></div>`;
+ last={groups:groups.slice(0,6),result,field,given,earthGiven};$('baseHead').textContent=given?'ถ้าไม่มีจุดผิดเพิ่ม':'ถ้าต่อปกติ';
+ $('ranks').innerHTML=last.groups.map((g,i)=>`<button data-g="${i}">อันดับ ${i+1} · ${g.total.toFixed(1)}${g.items.length>1?` (${g.items.length} แบบ)`:''}</button>`).join('');
+ [...$('ranks').children].forEach(b=>b.onclick=()=>show(+b.dataset.g,0));
+ $('moreHint').textContent=groups[0].items.length>1?'วิธีแยกแบบที่อธิบายได้เท่ากัน: วัดกระแสสายขาว/ส้ม แรงดันระหว่างสายที่สงสัยกับสายอื่นทุกเส้น แรงดันที่ขั้วมิเตอร์ 16–19 / 22–19 หรือระบุการต่อหน้ามิเตอร์ในขั้นที่ 2':'';
+ $('resultPanel').classList.remove('hidden');show(0,0);$('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+$('run').onclick=async()=>{let field;try{field=readField();}catch(e){$('status').innerHTML=`<span class="bad">${esc(e.message)}</span>`;return;}
+ const options=readOptions();$('run').disabled=true;$('progress').hidden=false;$('status').textContent='กำลังจำลอง…';
+ try{const r=await D.diagnoseAsync(field,{...options,top:40},p=>$('progress').value=p);render(r,field,options.meter,options.earth);$('status').textContent='เสร็จ';}
+ catch(e){$('status').innerHTML=`<span class="bad">${esc(e.message)}</span>`;}
+ finally{$('run').disabled=false;$('progress').hidden=true;}};
+$('addV').onclick=()=>addVoltage();
+$('clear').onclick=()=>{for(const el of document.querySelectorAll('#currents input,.row4 input'))el.value='';$('voltages').innerHTML='';addVoltage();$('resultPanel').classList.add('hidden');$('status').textContent='';};
+$('example').onclick=()=>{$('clear').onclick();$('voltages').innerHTML='';
+ const set=(w,A,pf,type,ref)=>{const tr=$('currents').querySelector(`tr[data-wire="${w}"]`);tr.querySelector('.a').value=A;if(pf!=null){tr.querySelector('.pf').value=pf;tr.querySelector('.type').value=type;tr.querySelector('.ref').value=ref;}};
+ set('red',2.472,0.595,'lag',0);set('green',2.553,0.996,'lead',1);set('black',0);set('gray',2.655);
+ addVoltage('white','gray',113);addVoltage('orange','gray',114);addVoltage('black','gray',113);};
+addVoltage();updateCount();
+</script>
+</body>
+</html>
